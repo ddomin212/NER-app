@@ -1,0 +1,8 @@
+Google-Images-Search
+pypdf
+xlsxwriter
+flask
+gunicorn
+pandas
+kaggle
+openpyxl

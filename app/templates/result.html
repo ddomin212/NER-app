@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>Result</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/Inter.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+
+  <body style="background: rgb(39, 38, 46)">
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4
+              class="modal-title"
+              style="color: rgb(0, 0, 0)"
+              id="modal-title"
+            >
+              Important!
+            </h4>
+            <button
+              class="btn-close"
+              type="button"
+              aria-label="Close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" style="text-align: center">
+            <img
+              id="modal-img"
+              class="rounded"
+              src="{{url_for('static', filename='img/search.png')}}"
+              style="max-width: 100%"
+            />
+            <p
+              style="color: rgb(0, 0, 0); margin-top: 15px; text-align: left"
+              id="modal-text"
+            >
+              when you open the link in Bing, you can also click on the 'Chat'
+              button to get a better summary of the item.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="wrapper">
+      <div class="container">
+        <h1></h1>
+        <p></p>
+      </div>
+      <div class="container d-flex justifs-content-between">
+        <button
+          class="btn btn-primary btn-sm"
+          type="button"
+          onclick="sendExport()"
+          data-bs-toggle="modal"
+          data-bs-target="#modal-1"
+          style="
+            width: 170px;
+            height: 40px;
+            background: rgba(55, 99, 244, 0);
+            border-width: 3px;
+            border-style: solid;
+          "
+        >
+          Download
+        </button>
+      </div>
+      <div class="container">
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              {% for item in data %}
+              <tr>
+                <td>
+                  <button
+                    onclick="sendInfo(this) && showSpinner()"
+                    value="{'name': '{{item[0]}}', 'tags': '{{item[1]}}'}"
+                    type="button"
+                    class="btn btn-link"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal-1"
+                  >
+                    {{item[0]}}
+                  </button>
+                </td>
+                <td>{{item[1]}}</td>
+                <td><a href="{{item[2]}}">Bing Search</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="container d-flex justify-content-center">
+        <nav>
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" aria-label="Previous" href="#"
+                ><span aria-hidden="true">«</span></a
+              >
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item">
+              <a class="page-link" aria-label="Next" href="#"
+                ><span aria-hidden="true">»</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <script>
+      document.getElementById("spinwrap").style.display = "none";
+      async function sendInfo(objButton) {
+        var value = objButton.value.replace(/'/g, '"');
+        document.getElementById("modal-title").innerHTML =
+          JSON.parse(value).name;
+        document.getElementById("modal-img").src = "";
+        document.getElementById("modal-text").innerHTML = "Loading...";
+        console.log(value);
+        const request = await fetch("/api/gpt-modal", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: value,
+        });
+        const data = await request.json();
+        document.getElementById("modal-img").src = data.img_url;
+        document.getElementById("modal-text").innerHTML = data.response;
+      }
+      function sendExport() {
+        console.log("here");
+        const request = fetch(`/api/export`, {
+          method: "GET",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            // Create a URL for the blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Create a link to download the file
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `data.xlsx`;
+            document.body.appendChild(link);
+
+            // Click the link to download the file
+            link.click();
+
+            // Remove the link from the DOM
+            document.body.removeChild(link);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>

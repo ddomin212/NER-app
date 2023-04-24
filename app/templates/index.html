@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>Index</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/Inter.css') }}"
+    />
+  </head>
+
+  <body style="background: rgb(39, 38, 46)">
+    <div id="contwrap">
+      <header class="bg-dark">
+        <div class="container pt-4 pt-xl-5">
+          <div class="row pt-5">
+            <div class="col-md-8 col-xl-6 text-center text-md-start mx-auto">
+              <div class="text-center">
+                <p class="fw-bold text-success mb-2" style="font-size: 20px">
+                  AIF Parser
+                </p>
+                <h1 class="fw-bold">learn faster with .ai</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section></section>
+      <section></section>
+      <div class="bg-dark">
+        <form
+          action=""
+          method="post"
+          id="upload-form"
+          enctype="multipart/form-data"
+        >
+          <div class="container text-center">
+            <input
+              id="file-input"
+              type="file"
+              name="file"
+              style="display: none"
+            />
+            <button
+              class="btn btn-primary btn-lg"
+              id="upload-btn"
+              style="
+                margin-top: 40px;
+                width: 250px;
+                height: 70px;
+                background: rgba(55, 99, 244, 0);
+                border-width: 3px;
+                border-style: solid;
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="bi bi-plus-square-fill"
+                style="font-size: 30px; margin-right: 18px; margin-bottom: 2px"
+              >
+                <path
+                  d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"
+                ></path></svg
+              >Insert PDF
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      class="container"
+      style="text-align: center; margin-top: 40px"
+      id="spinwrap"
+    >
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        style="height: 100px; width: 100px"
+      ></span>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.getElementById("spinwrap").style.display = "none";
+      function showSpinner() {
+        document.getElementById("spinwrap").style.display = "block";
+        document.getElementById("contwrap").style.display = "none";
+      }
+
+      document
+        .getElementById("upload-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          document.getElementById("file-input").click();
+        });
+
+      document
+        .getElementById("file-input")
+        .addEventListener("change", function (e) {
+          e.preventDefault();
+          showSpinner();
+          document.getElementById("upload-form").submit();
+        });
+
+      if ("{{ g.loading_complete }}" == "True") {
+        // Hide the loading spinner
+        document.getElementById("spinwrap").style.display = "none";
+        document.getElementById("contwrap").style.display = "block";
+      }
+    </script>
+  </body>
+</html>

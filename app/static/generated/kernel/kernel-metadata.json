@@ -1,0 +1,1 @@
+{"id": "dandominko/ner-app-kernel", "title": "ner-app-kernel", "code_file": "ner.ipynb", "language": "python", "kernel_type": "notebook", "is_private": true, "enable_gpu": true, "enable_internet": true, "keywords": ["gpu"], "dataset_sources": ["dandominko/ner-app"], "kernel_sources": [], "competition_sources": []}
