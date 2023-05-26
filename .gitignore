@@ -2,3 +2,5 @@
 /nernev
 /app/.env
 Dockerfile
+.dockerignore
+/static/generated
