@@ -1,12 +1,22 @@
+"""
+This module contains helper functions for the AI chatbot application. 
+It includes functions for writing data to an Excel file and exporting data to CSV.
+"""
+import os
 from revChatGPT.V1 import Chatbot
 from google_images_search import GoogleImagesSearch
 import xlsxwriter
-import os
+
 
 gis = GoogleImagesSearch("AIzaSyCgVG5k4HEGT80flFDUDov4Q0UKNi1lTNc", "13654d507ac2445e2")
 
 
 def write_excel(data):
+    """
+    Writes data to an Excel file. This is a helper function for : func : ` get_excel `.
+
+    @param data - A list of lists where each list is a row
+    """
     # Create a new Excel file
     workbook = xlsxwriter.Workbook("data.xlsx")
     # Add a new worksheet to the Excel file
@@ -26,7 +36,13 @@ def write_excel(data):
 
 
 def export_to_csv(data):
+    """
+    Export data to CSV. This is a helper function for : func : ` write_excel `.
+
+    @param data - List of data to export. Each item is a 2 - tuple ( name tag
+    """
     new_data = []
+    # Add a search query to the data.
     for item in data:
         name, tag = item[0], item[1][0]
         temp = (name, tag, f"https://www.bing.com/search?q={name.replace(' ', '+')}")
@@ -35,6 +51,14 @@ def export_to_csv(data):
 
 
 def get_response(name, ner):
+    """
+    Returns response for name and NER. This is a helper function to make it easier to use in tests
+
+    @param name - Name of the person to check
+    @param ner - NER of the person to check ( may be None )
+
+    @return A dictionary of response information to send to the test_server. py for the name and NER
+    """
     ner_dict = {
         "PERSON": "You are an expert people explainer. You can explain people of today or from history in an information dense format, while keeping the main points of their character intact. Describe this person in 5 sentences: ",
         "NATIONAL/RELIGIOUS/POLITICAL GROUP": "You are a specialist in national, religious and political groups. You focus on information dense sumaries of these various groups in just a few sentences, so that people know exactly what this group is all about. Now describe this national/religious/political group in 5 sentences: ",
@@ -68,6 +92,7 @@ def get_response(name, ner):
 
     response = ""
 
+    # ask for a prompt and return the message
     for data in chatbot.ask(prompt):
         response = data["message"]
 

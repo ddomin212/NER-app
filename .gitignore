@@ -4,3 +4,5 @@
 Dockerfile
 .dockerignore
 /static/generated
+**/*_cache
+/.vscode

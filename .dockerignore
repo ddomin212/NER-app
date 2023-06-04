@@ -2,3 +2,5 @@
 /nernev
 /app/.env
 Dockerfile
+**/*_cache
+/.vscode
