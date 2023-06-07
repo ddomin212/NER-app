@@ -15,7 +15,6 @@ class TestExport(unittest.TestCase):
         app.config["TESTING"] = True
         self.app = app.test_client()
 
-    @patch("os.path.exists")
     def test_export_with_file(self):
         """
         Test exporting a file with a file name.

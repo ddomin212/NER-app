@@ -18,7 +18,7 @@ class TestGptModal(unittest.TestCase):
         app.config["TESTING"] = True
         self.app = app.test_client()
 
-    @patch("app.functions.ai_helpers.get_response")
+    @patch("app.functions.app_helpers.get_response")
     def test_gpt_modal_with_data(self, mock_get_response):
         """
         Test gpt modals with data. The data should be encoded as JSON and passed to the request.

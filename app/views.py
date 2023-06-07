@@ -22,8 +22,6 @@ def home():
     """
     if request.method != "POST":
         return render_template("index.html")
-    if "file" not in request.files:
-        flash("No file part")
     uploaded_file = request.files["file"]
     if uploaded_file.filename == "":
         return "No file selected", 400
