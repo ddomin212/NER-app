@@ -1,8 +1,6 @@
 **/__pycache__
 /nernev
 /app/.env
-Dockerfile
-.dockerignore
 /static/generated
 **/*_cache
 /.vscode
