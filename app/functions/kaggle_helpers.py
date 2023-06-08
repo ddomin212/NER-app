@@ -26,7 +26,7 @@ def get_ner_kaggle(uploaded_file, first_time):
     """
     uploaded_file.save("app/static/generated/dataset/file.pdf")
     # run the bash script
-    subprocess.run(["bash", "app/functions/kaggle.sh", first_time], check=True)
+    subprocess.run(["bash", "app/functions/kaggle.sh", first_time], check=False)
     # continue with Python code
     print("The script has finished executing.")
     return pd.read_excel("app/static/generated/output/data.xlsx").values.tolist()
@@ -89,7 +89,7 @@ def init_kernel():
     }
     subprocess.run(
         ["mv", "app/static/ner.ipynb", "app/static/generated/kernel/ner.ipynb"],
-        check=True,
+        check=False,
     )
     json.dump(
         kaggle_metadata,
