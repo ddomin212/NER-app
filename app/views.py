@@ -7,6 +7,9 @@ import os
 from flask import render_template, request, flash, jsonify, send_file, g
 from app.functions import *
 from app import app
+from .conf import initialize_logging
+
+logger = initialize_logging()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -31,8 +34,8 @@ def home():
         else "yes"
     )
     if first_time == "yes":
-        init_kaggle()
-    data = get_ner_kaggle(uploaded_file, first_time)
+        init_kaggle(logger)
+    data = get_ner_kaggle(logger, uploaded_file, first_time)
     g.loading_complete = True
     return render_template("result.html", data=data)
 
